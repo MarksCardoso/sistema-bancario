@@ -95,6 +95,16 @@ public class App {
                         System.out.print("Saldo inicial da nova conta: ");
                         saldoInicial = input.nextFloat();
                         saldoAtual = saldoInicial;
+                        input.nextLine();
+
+                        System.out.println("Conta cadastrada com sucesso!");
+                        System.out.format("Saldo inicial de R$%.2f", saldoInicial);
+                        input.nextLine();
+
+                        
+                        System.out.print("\033\143");
+                        System.out.println("Pressione ENTER para voltar ao menu...");
+                        input.nextLine();
 
                         if (saldoInicial != 0.0d && saldoInicial > 0 && saldoAtual == saldoInicial) {
                             contaExists = true;
