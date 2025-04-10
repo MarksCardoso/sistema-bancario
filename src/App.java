@@ -68,6 +68,45 @@ public class App {
 
                         break;
                     case 5:
+                        double capital = 0.0d;
+                        double taxa = 0.0d;
+                        int parcelas = 0;
+                        double totalJuros = 0.0d;
+                        double totalParcelas = 0.0d;
+                        msg = "";
+
+                        while (taxa <= 0.0d || capital <= 0.0d || parcelas <= 0) {
+                            System.out.print("\033\143");
+                            System.out.println("========== SIMULAR EMPRÉSTIMO ==========\n");
+                            if (capital <= 0.0d) {
+                                System.out.print("Digite o valor do empréstimo: ");
+                                capital = input.nextDouble();
+                            }
+
+                            if (taxa <= 0.0d) {
+                                System.out.print("Digite a taxa de juros mensal: ");
+                                taxa = input.nextDouble();
+                            }
+
+                            if (parcelas <= 0) {
+                                System.out.print("Digite a quantidade de parcelas: ");
+                                parcelas = input.nextInt();
+                            }
+                        }
+
+                        double juros = 0.0d;
+                        double montante = 0.0d;
+
+                        for (int i = 0; i < parcelas; i++) {
+                            juros = capital * taxa * (i + 1);
+                            montante = capital + juros;
+                            msg += String.format("Parcela %d: R$ %.2f\n", (i + 1), montante);
+                            totalJuros += juros;
+                            totalParcelas += montante;
+                        }
+
+                        msg += String.format("Total de juros: R$ %.2f\n", totalJuros);
+                        msg += String.format("Total de parcelas: R$ %.2f", totalParcelas);
 
                         break;
                     case 6:
@@ -76,18 +115,18 @@ public class App {
                     case 7:
 
                         break;
-                        case 8:
+                    case 8:
                         msg = "Fechando programa";
-                        
+
                         break;
-                        default:
+                    default:
                         msg = "ERRO: Opção indisponível";
-                        
+
                         break;
-                    }
-                } else {
-                    switch (option) {
-                        case 1:
+                }
+            } else {
+                switch (option) {
+                    case 1:
                         System.out.print("\033\143");
                         System.out.println("========== ABRIR CONTA ==========\n");
                         System.out.print("Digite o nome do titular da nova conta: ");
