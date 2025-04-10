@@ -57,7 +57,7 @@ public class App {
                         saldoAtual += valorDeposito;
                         totalDeposito += valorDeposito;
                         qtyDeposito++;
-                        
+
                         msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
 
                         break;
@@ -76,18 +76,18 @@ public class App {
                     case 7:
 
                         break;
-                        case 8:
+                    case 8:
                         msg = "Fechando programa";
-                        
+
                         break;
-                        default:
+                    default:
                         msg = "ERRO: Opção indisponível";
-                        
+
                         break;
-                    }
-                } else {
-                    switch (option) {
-                        case 1:
+                }
+            } else {
+                switch (option) {
+                    case 1:
                         System.out.print("\033\143");
                         System.out.println("========== ABRIR CONTA ==========\n");
                         System.out.print("Digite o nome do titular da nova conta: ");
@@ -97,18 +97,18 @@ public class App {
                         saldoAtual = saldoInicial;
                         input.nextLine();
 
-                        System.out.println("Conta cadastrada com sucesso!");
-                        System.out.format("Saldo inicial de R$%.2f", saldoInicial);
-                        input.nextLine();
-
-                        
                         System.out.print("\033\143");
-                        System.out.println("Pressione ENTER para voltar ao menu...");
-                        input.nextLine();
-
                         if (saldoInicial != 0.0d && saldoInicial > 0 && saldoAtual == saldoInicial) {
                             contaExists = true;
+
+                            System.out.println("Conta cadastrada com sucesso!");
+                            System.out.printf("Saldo inicial de R$%.2f\n", saldoInicial);
+                        } else {
+                            System.out.println("ERRO: Informações inválidas. Tente novamente.");
                         }
+
+                        System.out.println("Pressione ENTER para voltar ao menu...");
+                        input.nextLine();
 
                         break;
 
