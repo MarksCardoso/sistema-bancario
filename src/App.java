@@ -68,15 +68,17 @@ public class App {
                         System.out.println("========== REALIZAR SAQUE ==========\n");
                         System.out.println("Digite o valor a ser sacado!");
 
-                        float valorSaque = 0f;
-                        int notas;
+                        int valorRestante = 0;
+                        int valorSaque = 0;
+                        int[] notas = {100, 50, 20, 10, 5, 2};
+                        int[] qtdNotas = new int[notas.length];
 
                         while (valorValidacao == false) {
-                            if (input.hasNextFloat()) {
-                                valorSaque = input.nextFloat();
+                            if (input.hasNextInt()) {
+                                valorSaque = input.nextInt();
                                 input.nextLine();
 
-                                if (valorSaque % 2 != 0) {
+                                if (valorSaque % 2 != 0 && valorSaque < 5) {
                                     System.out.println("ERRO! Notas disponiveis: 100, 50, 20, 10, 5, 2.");
 
                                 } else if (valorSaque <= 0) {
@@ -88,8 +90,21 @@ public class App {
                                     saldoAtual -= valorSaque;
                                     qtySaques++;
 
-                                    System.out.print("\033\143");
-                                    System.out.format("Saque de R$%.2f realizado com sucesso!\n", valorSaque);
+                                    for (int i = 0; i < notas.length; i++) {
+                                        qtdNotas[i] = valorSaque / notas[i];
+                                        valorRestante %= notas[i];
+
+                                    }
+
+                                    System.out.println("Notas entregues:");
+
+                                    for (int i = 0; i < notas.length; i++) {
+                                        if (qtdNotas[i] > 0) {
+                                            System.out.println("R$ " + notas[i] + ": " + qtdNotas[i] + " nota(s)");
+                                        }
+                                    }
+
+                                    System.out.format("Saque de R$%d realizado com sucesso!\n", valorSaque);
                                     System.out.format("Saldo atual: R$%.2f\n\n", saldoAtual);
                                 }
 
@@ -97,10 +112,13 @@ public class App {
                                 System.out.println("ERRO! Digite um valor numerico!");
                             }
                         }
+
+                        valorValidacao = false;
                         System.out.println("Pressione ENTER para voltar ao menu...");
                         input.nextLine();
 
                         break;
+
                     case 4:
 
                         break;
