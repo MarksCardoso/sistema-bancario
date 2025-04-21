@@ -1,6 +1,8 @@
+
 import java.util.Scanner;
 
 public class App {
+
     public static void showMenu(boolean acc, String msg) {
         System.out.print("\033\143");
         System.out.println("========== MENU ==========");
@@ -19,6 +21,80 @@ public class App {
             System.out.println("7. Integrantes");
         }
         System.out.println("8. Sair");
+    }
+
+    public static double sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao) {
+        System.out.print("\033\143");
+        System.out.println("========== REALIZAR SAQUE ==========\n");
+        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
+
+        
+        int valorSaque;
+        int[] notas = {100, 50, 20, 10, 5, 2};
+
+        while (!valorValidacao) {
+            System.out.println("\nDigite o valor a ser sacado: ");
+
+            if (input.hasNextInt()) {
+                valorSaque = input.nextInt();
+                input.nextLine();
+
+                if (valorSaque <= 0) {
+                    System.out.println("Digite um valor maior que zero!");
+
+                } else if (valorSaque > saldoAtual) {
+                    System.out.println("Saldo insuficiente!");
+
+                } else {
+                    int testeNotas = valorSaque;
+
+                    for (int i = 0; i < notas.length; i++) {
+                        testeNotas = testeNotas % notas[i];
+                    }
+
+                    if (testeNotas != 0) {
+                        System.out.println("Valor inválido para as notas disponíveis.");
+
+                    } else {
+                        valorValidacao = true;
+                        saldoAtual -= valorSaque;
+                        qtySaques++;
+
+                        int[] qtdNotas = new int[notas.length];
+                        int restante = valorSaque;
+
+                        for (int i = 0; i < notas.length; i++) {
+                            qtdNotas[i] = restante / notas[i];
+                            restante %= notas[i];
+                        }
+
+                        System.out.print("\033\143");
+
+                        System.out.println("Notas entregues:");
+                        for (int i = 0; i < notas.length; i++) {
+                            if (qtdNotas[i] > 0) {
+                                System.out.printf("R$ %d: %d nota(s)\n", notas[i], qtdNotas[i]);
+                            }
+                        }
+
+                        System.out.printf("Saque de R$%d realizado com sucesso!\n", valorSaque);
+                        System.out.printf("Saldo atual: R$%.2f\n", saldoAtual);
+                    }
+                }
+            } else {
+                System.out.println("Erro: digite um número válido.");
+                input.nextLine(); // limpa buffer
+            }
+        }
+
+
+        valorValidacao = false;
+        System.out.println("Pressione ENTER para voltar ao menu...");
+        input.nextLine();
+
+        
+        return saldoAtual;
+
     }
 
     public static void main(String[] args) throws Exception {
@@ -64,69 +140,10 @@ public class App {
 
                         break;
                     case 3:
-                        System.out.print("\033\143");
-                        System.out.println("========== REALIZAR SAQUE ==========\n");
-                        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
 
-                        int valorSaque = 0;
-                        int[] notas = {100, 50, 20, 10, 5, 2};
-
-                        while (!valorValidacao) {
-                            System.out.println("\nDigite o valor a ser sacado: ");
-
-                            if (input.hasNextInt()) {
-                                valorSaque = input.nextInt();
-                                input.nextLine();
-
-                                if (valorSaque <= 0) {
-                                    System.out.println("Digite um valor maior que zero!");
-
-                                } else if (valorSaque > saldoAtual) {
-                                    System.out.println("Saldo insuficiente!");
-
-                                } else {
-                                    int testeNotas = valorSaque;
-
-                                    for (int i = 0; i < notas.length; i++) {
-                                        testeNotas = testeNotas % notas[i];
-                                    }
-
-                                    if (testeNotas != 0) {
-                                        System.out.println("Valor inválido para as notas disponíveis.");
-
-                                    } else {
-                                        valorValidacao = true;
-                                        saldoAtual -= valorSaque;
-                                        qtySaques++;
-
-                                        int[] qtdNotas = new int[notas.length];
-                                        int restante = valorSaque;
-
-                                        for (int i = 0; i < notas.length; i++) {
-                                            qtdNotas[i] = restante / notas[i];
-                                            restante %= notas[i];
-                                        }
-
-                                        System.out.println("Notas entregues:");
-                                        for (int i = 0; i < notas.length; i++) {
-                                            if (qtdNotas[i] > 0) {
-                                                System.out.printf("R$ %d: %d nota(s)\n", notas[i], qtdNotas[i]);
-                                            }
-                                        }
-
-                                        System.out.printf("Saque de R$%d realizado com sucesso!\n", valorSaque);
-                                        System.out.printf("Saldo atual: R$%.2f\n", saldoAtual);
-                                    }
-                                }
-                            } else {
-                                System.out.println("Erro: digite um número válido.");
-                                input.nextLine(); // limpa buffer
-                            }
-                        }
-
-                        valorValidacao = false;
-                        System.out.println("Pressione ENTER para voltar ao menu...");
-                        input.nextLine();
+                        msg = "";
+                        saldoAtual = sacar(input, saldoAtual, qtySaques, valorValidacao);
+                        msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
                         break;
 
                     case 4:
