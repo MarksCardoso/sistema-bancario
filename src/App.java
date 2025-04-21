@@ -23,6 +23,50 @@ public class App {
         System.out.println("8. Sair");
     }
 
+    public static String simularEmprestimo(String msg, Scanner input) {
+        msg = "";
+        double capital = 0.0d;
+        double taxa = 0.0d;
+        int parcelas = 0;
+        double totalJuros = 0.0d;
+        double totalParcelas = 0.0d;
+
+        while (taxa <= 0.0d || capital <= 0.0d || parcelas <= 0) {
+            System.out.print("\033\143");
+            System.out.println("========== SIMULAR EMPRÉSTIMO ==========\n");
+            if (capital <= 0.0d) {
+                System.out.print("Digite o valor do empréstimo: ");
+                capital = input.nextDouble();
+            }
+
+            if (taxa <= 0.0d) {
+                System.out.print("Digite a taxa de juros mensal: ");
+                taxa = input.nextDouble();
+            }
+
+            if (parcelas <= 0) {
+                System.out.print("Digite a quantidade de parcelas: ");
+                parcelas = input.nextInt();
+            }
+        }
+
+        double juros = 0.0d;
+        double montante = 0.0d;
+
+        for (int i = 0; i < parcelas; i++) {
+            juros = capital * taxa * (i + 1);
+            montante = capital + juros;
+            msg += String.format("Parcela %d: R$ %.2f\n", (i + 1), montante);
+            totalJuros += juros;
+            totalParcelas += montante;
+        }
+
+        msg += String.format("Total de juros: R$ %.2f\n", totalJuros);
+        msg += String.format("Total de parcelas: R$ %.2f", totalParcelas);
+
+        return msg;
+    }
+  
     public static double sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao) {
         System.out.print("\033\143");
         System.out.println("========== REALIZAR SAQUE ==========\n");
@@ -91,10 +135,8 @@ public class App {
         valorValidacao = false;
         System.out.println("Pressione ENTER para voltar ao menu...");
         input.nextLine();
-
         
         return saldoAtual;
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -150,45 +192,7 @@ public class App {
 
                         break;
                     case 5:
-                        double capital = 0.0d;
-                        double taxa = 0.0d;
-                        int parcelas = 0;
-                        double totalJuros = 0.0d;
-                        double totalParcelas = 0.0d;
-                        msg = "";
-
-                        while (taxa <= 0.0d || capital <= 0.0d || parcelas <= 0) {
-                            System.out.print("\033\143");
-                            System.out.println("========== SIMULAR EMPRÉSTIMO ==========\n");
-                            if (capital <= 0.0d) {
-                                System.out.print("Digite o valor do empréstimo: ");
-                                capital = input.nextDouble();
-                            }
-
-                            if (taxa <= 0.0d) {
-                                System.out.print("Digite a taxa de juros mensal: ");
-                                taxa = input.nextDouble();
-                            }
-
-                            if (parcelas <= 0) {
-                                System.out.print("Digite a quantidade de parcelas: ");
-                                parcelas = input.nextInt();
-                            }
-                        }
-
-                        double juros = 0.0d;
-                        double montante = 0.0d;
-
-                        for (int i = 0; i < parcelas; i++) {
-                            juros = capital * taxa * (i + 1);
-                            montante = capital + juros;
-                            msg += String.format("Parcela %d: R$ %.2f\n", (i + 1), montante);
-                            totalJuros += juros;
-                            totalParcelas += montante;
-                        }
-
-                        msg += String.format("Total de juros: R$ %.2f\n", totalJuros);
-                        msg += String.format("Total de parcelas: R$ %.2f", totalParcelas);
+                        msg = simularEmprestimo(msg, input);
 
                         break;
                     case 6:
