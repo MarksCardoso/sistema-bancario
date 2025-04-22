@@ -22,7 +22,7 @@ public class App {
         }
         System.out.println("8. Sair");
     }
-
+  
     public static String simularEmprestimo(String msg, Scanner input) {
         msg = "";
         double capital = 0.0d;
@@ -138,6 +138,24 @@ public class App {
         
         return saldoAtual;
     }
+  
+    public static double[] depositar(Scanner input, double saldoAtual, double totalDeposito, int qtyDeposito) {
+        System.out.print("\033\143");
+        System.out.println("========== DEPÓSITO ==========\n");
+        System.out.printf("Saldo atual: R$ %.2f", saldoAtual);
+        double valorDeposito = 0.0d;
+
+        while (valorDeposito <= 0) {
+            System.out.print("\nDigite um valor a ser depositado: ");
+            valorDeposito = input.nextDouble();
+        }
+
+        saldoAtual += valorDeposito;
+        totalDeposito += valorDeposito;
+        qtyDeposito++;
+
+        return new double[]{saldoAtual, totalDeposito, qtyDeposito};
+    }
 
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
@@ -164,23 +182,14 @@ public class App {
             if (contaExists) {
                 switch (option) {
                     case 2:
-                        System.out.print("\033\143");
-                        System.out.println("========== DEPÓSITO ==========\n");
-                        System.out.printf("Saldo atual: R$ %.2f", saldoAtual);
-                        double valorDeposito = 0.0d;
-
-                        while (valorDeposito <= 0) {
-                            System.out.print("\nDigite um valor a ser depositado: ");
-                            valorDeposito = input.nextDouble();
-                        }
-
-                        saldoAtual += valorDeposito;
-                        totalDeposito += valorDeposito;
-                        qtyDeposito++;
-
+                        double[] resultadoDeposito = depositar(input, saldoAtual, totalDeposito, qtyDeposito);
+                        saldoAtual = resultadoDeposito[0];
+                        totalDeposito = resultadoDeposito[1];
+                        qtyDeposito = (int) resultadoDeposito[2];
                         msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
 
                         break;
+
                     case 3:
 
                         msg = "";
