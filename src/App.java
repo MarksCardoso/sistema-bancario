@@ -203,6 +203,7 @@ public class App {
         System.out.print("\033\143");
         System.out.println("========== APLICAR JUROS ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
+        System.out.printf("Total de juros: R$ %.2f\n", totalJuros);
         System.out.print("\nPressione ENTER para voltar ao menu...");
         input.nextLine();
         input.nextLine();
