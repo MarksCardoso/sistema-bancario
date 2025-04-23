@@ -22,7 +22,7 @@ public class App {
         }
         System.out.println("8. Sair");
     }
-  
+
     public static String simularEmprestimo(String msg, Scanner input) {
         msg = "";
         double capital = 0.0d;
@@ -66,15 +66,14 @@ public class App {
 
         return msg;
     }
-  
+
     public static double sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao) {
         System.out.print("\033\143");
         System.out.println("========== REALIZAR SAQUE ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
 
-        
         int valorSaque;
-        int[] notas = {100, 50, 20, 10, 5, 2};
+        int[] notas = { 100, 50, 20, 10, 5, 2 };
 
         while (!valorValidacao) {
             System.out.println("\nDigite o valor a ser sacado: ");
@@ -131,20 +130,19 @@ public class App {
             }
         }
 
-
         valorValidacao = false;
         System.out.println("Pressione ENTER para voltar ao menu...");
         input.nextLine();
-        
+
         return saldoAtual;
     }
-  
+
     public static double[] depositar(Scanner input, double saldoAtual, double totalDeposito, int qtyDeposito) {
         System.out.print("\033\143");
         System.out.println("========== DEPÓSITO ==========\n");
         System.out.printf("Saldo atual: R$ %.2f", saldoAtual);
         double valorDeposito = 0.0d;
-
+        
         while (valorDeposito <= 0) {
             System.out.print("\nDigite um valor a ser depositado: ");
             valorDeposito = input.nextDouble();
@@ -153,8 +151,27 @@ public class App {
         saldoAtual += valorDeposito;
         totalDeposito += valorDeposito;
         qtyDeposito++;
+        
+        return new double[] { saldoAtual, totalDeposito, qtyDeposito };
+    }
 
-        return new double[]{saldoAtual, totalDeposito, qtyDeposito};
+    public static double aplicarJuros(Scanner input, double saldoAtual) {
+        System.out.print("\033\143");
+        System.out.println("========== APLICAR JUROS ==========\n");
+        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
+
+        System.out.print("Digite a taxa de juros (%): ");
+        double taxaJuros = input.nextDouble();
+
+        while (taxaJuros <= 0) {
+            System.out.print("Taxa está invalida. Digite uma taxa com valor positivo: ");
+            taxaJuros = input.nextDouble();
+        }
+
+        double valorJuros = saldoAtual * (taxaJuros / 100);
+        saldoAtual += valorJuros;
+
+        return saldoAtual;
     }
 
     public static void main(String[] args) throws Exception {
@@ -198,20 +215,8 @@ public class App {
                         break;
 
                     case 4:
-                        System.out.print("\033\143");
-                        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
+                        saldoAtual = aplicarJuros(input, saldoAtual);
 
-                        System.out.print("Digite a taxa de juros: (%)");
-                        double taxaJuros = input.nextDouble();
-
-                    while (taxaJuros <= 0) {
-                        System.out.print("Taxa está invalida. Digite uma taxa com valor positivo: ");
-                        taxaJuros = input.nextDouble();
-                    }
-
-                    double valorJuros = saldoAtual * (taxaJuros/100);
-                    saldoAtual += valorJuros;
-                    
                         break;
 
                     case 5:
