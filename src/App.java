@@ -212,6 +212,14 @@ public class App {
         input.nextLine();
     }
 
+    public static void showIntegrantes(Scanner input) {
+        System.out.print("\033\143");
+        System.out.println("Integrantes: ");
+        System.out.println("Marks Cardoso, Henrique Joaquim e Nícolas Lisbôa");
+        System.out.print("Pressione ENTER para voltar ao menu...");
+        input.nextLine();
+    }
+
     public static void main(String[] args) throws Exception {
         Scanner input = new Scanner(System.in);
 
@@ -283,6 +291,7 @@ public class App {
                                 totalSaques, totalJuros, saldoMax, saldoMin);
                         break;
                     case 7:
+                        showIntegrantes(input);
 
                         break;
                     case 8:
