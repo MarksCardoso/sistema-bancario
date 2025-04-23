@@ -67,7 +67,8 @@ public class App {
         return msg;
     }
 
-    public static double sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao) {
+    public static double[] sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao,
+            double totalSaques, double saldoMin) {
         System.out.print("\033\143");
         System.out.println("========== REALIZAR SAQUE ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
@@ -76,7 +77,7 @@ public class App {
         int[] notas = { 100, 50, 20, 10, 5, 2 };
 
         while (!valorValidacao) {
-            System.out.println("\nDigite o valor a ser sacado: ");
+            System.out.print("\nDigite o valor a ser sacado: ");
 
             if (input.hasNextInt()) {
                 valorSaque = input.nextInt();
@@ -102,6 +103,11 @@ public class App {
                         valorValidacao = true;
                         saldoAtual -= valorSaque;
                         qtySaques++;
+                        totalSaques += valorSaque;
+
+                        if (saldoAtual < saldoMin) {
+                            saldoMin = saldoAtual;
+                        }
 
                         int[] qtdNotas = new int[notas.length];
                         int restante = valorSaque;
@@ -134,10 +140,12 @@ public class App {
         System.out.println("Pressione ENTER para voltar ao menu...");
         input.nextLine();
 
-        return saldoAtual;
+        return new double[] { saldoAtual, totalSaques, qtySaques, saldoMin };
+
     }
 
-    public static double[] depositar(Scanner input, double saldoAtual, double totalDeposito, int qtyDeposito) {
+    public static double[] depositar(Scanner input, double saldoAtual, double totalDeposito, int qtyDeposito,
+            double saldoMax) {
         System.out.print("\033\143");
         System.out.println("========== DEPÓSITO ==========\n");
         System.out.printf("Saldo atual: R$ %.2f", saldoAtual);
@@ -152,10 +160,14 @@ public class App {
         totalDeposito += valorDeposito;
         qtyDeposito++;
 
-        return new double[] { saldoAtual, totalDeposito, qtyDeposito };
+        if (saldoAtual > saldoMax) {
+            saldoMax = saldoAtual;
+        }
+
+        return new double[] { saldoAtual, totalDeposito, qtyDeposito, saldoMax };
     }
 
-    public static double aplicarJuros(Scanner input, double saldoAtual) {
+    public static double[] aplicarJuros(Scanner input, double saldoAtual, double totalJuros, double saldoMax) {
         System.out.print("\033\143");
         System.out.println("========== APLICAR JUROS ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
@@ -170,8 +182,34 @@ public class App {
 
         double valorJuros = saldoAtual * (taxaJuros / 100);
         saldoAtual += valorJuros;
+        totalJuros += valorJuros;
 
-        return saldoAtual;
+        if (saldoAtual > saldoMax) {
+            saldoMax = saldoAtual;
+        }
+        
+        return new double[] {saldoAtual, totalJuros, saldoMax};
+    }
+
+    public static void extrato(String nome, double saldoInicial, Scanner input, double saldoAtual, int qtyDepositos,
+            double totalDeposito, int qtySaques, double totalSaques, double totalJuros, double saldoMax,
+            double saldoMin) {
+        System.out.print("\033\143"); // Limpar tela
+        System.out.println("========== EXTRATO ==========\n");
+
+        System.out.format("Titular: %s\n", nome);
+        System.out.format("Saldo inicial: R$ %.2f\n", saldoInicial);
+        System.out.format("Saldo atual: R$ %.2f\n", saldoAtual);
+        System.out.format("Quantidade total de depositos: %d\n", qtyDepositos);
+        System.out.format("Valor total de depositos: R$ %.2f\n", totalDeposito);
+        System.out.format("Quantidade total de saques: %d\n", qtySaques);
+        System.out.format("Valor total de saques: R$ %.2f\n", totalSaques);
+        System.out.format("Valor total de juros recebidos: R$ %.2f\n", totalJuros);
+        System.out.format("Saldo máximo da conta: R$ %.2f\n", saldoMax);
+        System.out.format("Saldo mínimo da conta: R$ %.2f\n", saldoMin);
+
+        System.out.printf("\nPressione ENTER para voltar ao menu...");
+        input.nextLine();
     }
 
     public static void showIntegrantes(Scanner input) {
@@ -192,6 +230,10 @@ public class App {
         double saldoInicial = 0.0d;
         double saldoAtual = 0.0d;
         double totalDeposito = 0.0d;
+        double totalSaques = 0.0d;
+        double totalJuros = 0.0d;
+        double saldoMin = 0.0d;
+        double saldoMax = 0.0d;
         int qtyDeposito = 0;
         int qtySaques = 0;
         boolean valorValidacao = false;
@@ -207,10 +249,12 @@ public class App {
             if (contaExists) {
                 switch (option) {
                     case 2:
-                        double[] resultadoDeposito = depositar(input, saldoAtual, totalDeposito, qtyDeposito);
+                        double[] resultadoDeposito = depositar(input, saldoAtual, totalDeposito, qtyDeposito,
+                                saldoAtual);
                         saldoAtual = resultadoDeposito[0];
                         totalDeposito = resultadoDeposito[1];
                         qtyDeposito = (int) resultadoDeposito[2];
+                        saldoMax = resultadoDeposito[3];
                         msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
 
                         break;
@@ -218,13 +262,23 @@ public class App {
                     case 3:
 
                         msg = "";
-                        saldoAtual = sacar(input, saldoAtual, qtySaques, valorValidacao);
+                        double[] resultadoSaque = sacar(input, saldoAtual, qtySaques, valorValidacao, totalSaques,
+                                saldoAtual);
+                        saldoAtual = resultadoSaque[0];
+                        totalSaques = resultadoSaque[1];
+                        qtySaques = (int) resultadoSaque[2];
+                        saldoMin = resultadoSaque[3];
                         msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
+
                         break;
 
                     case 4:
-                        saldoAtual = aplicarJuros(input, saldoAtual);
+                        double[] resultadoAplicarJuros = aplicarJuros(input, saldoAtual, totalJuros, saldoMax);
 
+                        saldoAtual = resultadoAplicarJuros[0];
+                        totalJuros = resultadoAplicarJuros[1];
+                        saldoMax = resultadoAplicarJuros[2];
+                        
                         break;
 
                     case 5:
@@ -233,6 +287,8 @@ public class App {
                         break;
                     case 6:
 
+                        extrato(nome, saldoInicial, input, saldoAtual, qtyDeposito, totalDeposito, qtySaques,
+                                totalSaques, totalJuros, saldoMax, saldoMin);
                         break;
                     case 7:
                         showIntegrantes(input);
@@ -256,6 +312,8 @@ public class App {
                         System.out.print("Saldo inicial da nova conta: ");
                         saldoInicial = input.nextFloat();
                         saldoAtual = saldoInicial;
+                        saldoMin = saldoInicial;
+                        saldoMax = saldoInicial;
                         input.nextLine();
 
                         System.out.println("Conta cadastrada com sucesso!");
