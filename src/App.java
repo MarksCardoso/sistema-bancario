@@ -187,8 +187,8 @@ public class App {
         if (saldoAtual > saldoMax) {
             saldoMax = saldoAtual;
         }
-        
-        return new double[] {saldoAtual, totalJuros, saldoMax};
+
+        return new double[] { saldoAtual, totalJuros, saldoMax };
     }
 
     public static void extrato(String nome, double saldoInicial, Scanner input, double saldoAtual, int qtyDepositos,
@@ -250,7 +250,7 @@ public class App {
                 switch (option) {
                     case 2:
                         double[] resultadoDeposito = depositar(input, saldoAtual, totalDeposito, qtyDeposito,
-                                saldoAtual);
+                                saldoMax);
                         saldoAtual = resultadoDeposito[0];
                         totalDeposito = resultadoDeposito[1];
                         qtyDeposito = (int) resultadoDeposito[2];
@@ -260,10 +260,8 @@ public class App {
                         break;
 
                     case 3:
-
-                        msg = "";
                         double[] resultadoSaque = sacar(input, saldoAtual, qtySaques, valorValidacao, totalSaques,
-                                saldoAtual);
+                                saldoMin);
                         saldoAtual = resultadoSaque[0];
                         totalSaques = resultadoSaque[1];
                         qtySaques = (int) resultadoSaque[2];
@@ -278,7 +276,7 @@ public class App {
                         saldoAtual = resultadoAplicarJuros[0];
                         totalJuros = resultadoAplicarJuros[1];
                         saldoMax = resultadoAplicarJuros[2];
-                        
+
                         break;
 
                     case 5:
