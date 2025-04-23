@@ -142,7 +142,7 @@ public class App {
         System.out.println("========== DEPÓSITO ==========\n");
         System.out.printf("Saldo atual: R$ %.2f", saldoAtual);
         double valorDeposito = 0.0d;
-        
+
         while (valorDeposito <= 0) {
             System.out.print("\nDigite um valor a ser depositado: ");
             valorDeposito = input.nextDouble();
@@ -151,7 +151,7 @@ public class App {
         saldoAtual += valorDeposito;
         totalDeposito += valorDeposito;
         qtyDeposito++;
-        
+
         return new double[] { saldoAtual, totalDeposito, qtyDeposito };
     }
 
@@ -172,6 +172,14 @@ public class App {
         saldoAtual += valorJuros;
 
         return saldoAtual;
+    }
+
+    public static void showIntegrantes(Scanner input) {
+        System.out.print("\033\143");
+        System.out.println("Integrantes: ");
+        System.out.println("Marks Cardoso, Henrique Joaquim e Nícolas Lisbôa");
+        System.out.print("Pressione ENTER para voltar ao menu...");
+        input.nextLine();
     }
 
     public static void main(String[] args) throws Exception {
@@ -227,6 +235,7 @@ public class App {
 
                         break;
                     case 7:
+                        showIntegrantes(input);
 
                         break;
                     case 8:
