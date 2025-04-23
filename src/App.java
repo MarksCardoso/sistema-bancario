@@ -67,7 +67,7 @@ public class App {
         return msg;
     }
 
-    public static double sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao, double totalSaques) {
+    public static double[] sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao, double totalSaques) {
         System.out.print("\033\143");
         System.out.println("========== REALIZAR SAQUE ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
@@ -135,7 +135,8 @@ public class App {
         System.out.println("Pressione ENTER para voltar ao menu...");
         input.nextLine();
 
-        return saldoAtual;
+        return new double[]{saldoAtual, totalSaques, qtySaques};
+
     }
 
     public static double[] depositar(Scanner input, double saldoAtual, double totalDeposito, int qtyDeposito) {
@@ -156,7 +157,7 @@ public class App {
         return new double[]{saldoAtual, totalDeposito, qtyDeposito};
     }
 
-    public static double aplicarJuros(Scanner input, double saldoAtual) {
+    public static double aplicarJuros(Scanner input, double saldoAtual, double totalJuros) {
         System.out.print("\033\143");
         System.out.println("========== APLICAR JUROS ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
@@ -171,11 +172,12 @@ public class App {
 
         double valorJuros = saldoAtual * (taxaJuros / 100);
         saldoAtual += valorJuros;
+        totalJuros += valorJuros;
 
         return saldoAtual;
     }
 
-    public static void extrato(String nome, double saldoInicial, Scanner input, double saldoAtual, int qtyDepositos, double totalDeposito, int qtySaques, double totalSaques, double totalJuros, double minMaxConta) {
+    public static void extrato(String nome, double saldoInicial, Scanner input, double saldoAtual, int qtyDepositos, double totalDeposito, int qtySaques, double totalSaques, double totalJuros, double maxConta, double minConta) {
         System.out.print("\033\143"); //Limpar tela
         System.out.println("========== Extrato ==========");
 
@@ -187,7 +189,8 @@ public class App {
         System.out.format("Quantidade total de saques: %d\n", qtySaques);
         System.out.format("Valor total de saques: %.2f\n", totalSaques);
         System.out.format("Valor total de juros recebidos: %.2f\n", totalJuros);
-        System.out.format("Saldo minimo e maximo da conta: %.2f\n", minMaxConta);
+        System.out.format("Saldo maximo da conta: %.2f\n", maxConta);
+        System.out.format("Saldo minimo da conta: %.2f\n", minConta);
 
         System.out.println("Pressione ENTER para voltar ao menu.");
         input.nextLine();
@@ -206,6 +209,9 @@ public class App {
         double saldoAtual = 0.0d;
         double totalDeposito = 0.0d;
         double totalSaques = 0.0d;
+        double totalJuros = 0.0d;
+        double minConta = 0.0d;
+        double maxConta = 0.0d;
         int qtyDeposito = 0;
         int qtySaques = 0;
         boolean valorValidacao = false;
@@ -232,12 +238,16 @@ public class App {
                     case 3:
 
                         msg = "";
-                        saldoAtual = sacar(input, saldoAtual, qtySaques, valorValidacao, totalSaques);
+                        double[] resultadoSaque = sacar(input, saldoAtual, qtySaques, valorValidacao, totalSaques);
+                        saldoAtual = resultadoSaque[0];
+                        totalSaques = resultadoSaque[1];
+                        qtySaques = (int) resultadoSaque[2];
                         msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
+
                         break;
 
                     case 4:
-                        saldoAtual = aplicarJuros(input, saldoAtual);
+                        saldoAtual = aplicarJuros(input, saldoAtual, totalJuros);
 
                         break;
 
@@ -247,6 +257,7 @@ public class App {
                         break;
                     case 6:
 
+                        extrato(nome, saldoInicial, input, saldoAtual, qtyDeposito, totalDeposito, qtySaques, totalSaques, totalJuros, maxConta, minConta);
                         break;
                     case 7:
 
