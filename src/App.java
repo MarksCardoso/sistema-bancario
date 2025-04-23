@@ -284,7 +284,6 @@ public class App {
                         totalSaques = resultadoSaque[1];
                         qtySaques = (int) resultadoSaque[2];
                         saldoMin = resultadoSaque[3];
-                        msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
 
                         break;
 
