@@ -23,8 +23,7 @@ public class App {
         System.out.println("8. Sair");
     }
 
-    public static String simularEmprestimo(String msg, Scanner input) {
-        msg = "";
+    public static void simularEmprestimo(Scanner input) {
         double capital = 0.0d;
         double taxa = 0.0d;
         int parcelas = 0;
@@ -38,33 +37,36 @@ public class App {
                 System.out.print("Digite o valor do empréstimo: ");
                 capital = input.nextDouble();
             }
-
+            
             if (taxa <= 0.0d) {
                 System.out.print("Digite a taxa de juros mensal: ");
                 taxa = input.nextDouble();
             }
-
+            
             if (parcelas <= 0) {
                 System.out.print("Digite a quantidade de parcelas: ");
                 parcelas = input.nextInt();
             }
         }
-
+        
+        System.out.print("\033\143");
+        System.out.println("========== SIMULAR EMPRÉSTIMO ==========\n");
         double juros = 0.0d;
         double montante = 0.0d;
 
         for (int i = 0; i < parcelas; i++) {
             juros = capital * taxa * (i + 1);
             montante = capital + juros;
-            msg += String.format("Parcela %d: R$ %.2f\n", (i + 1), montante);
+            System.out.printf("Parcela %d: R$ %.2f\n", (i + 1), montante);
             totalJuros += juros;
             totalParcelas += montante;
         }
 
-        msg += String.format("Total de juros: R$ %.2f\n", totalJuros);
-        msg += String.format("Total de parcelas: R$ %.2f", totalParcelas);
-
-        return msg;
+        System.out.printf("Total de juros: R$ %.2f\n", totalJuros);
+        System.out.printf("Total de parcelas: R$ %.2f\n", totalParcelas);
+        System.out.print("\nPressione ENTER para voltar ao menu...");
+        input.nextLine();
+        input.nextLine();
     }
 
     public static double[] sacar(Scanner input, double saldoAtual, int qtySaques, boolean valorValidacao,
@@ -139,30 +141,37 @@ public class App {
         valorValidacao = false;
         System.out.println("Pressione ENTER para voltar ao menu...");
         input.nextLine();
-
+        
         return new double[] { saldoAtual, totalSaques, qtySaques, saldoMin };
-
+        
     }
-
+    
     public static double[] depositar(Scanner input, double saldoAtual, double totalDeposito, int qtyDeposito,
-            double saldoMax) {
+    double saldoMax) {
         System.out.print("\033\143");
         System.out.println("========== DEPÓSITO ==========\n");
-        System.out.printf("Saldo atual: R$ %.2f", saldoAtual);
+        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
         double valorDeposito = 0.0d;
-
+        
         while (valorDeposito <= 0) {
             System.out.print("\nDigite um valor a ser depositado: ");
             valorDeposito = input.nextDouble();
         }
-
+        
         saldoAtual += valorDeposito;
         totalDeposito += valorDeposito;
         qtyDeposito++;
-
+        
         if (saldoAtual > saldoMax) {
             saldoMax = saldoAtual;
         }
+        
+        System.out.print("\033\143");
+        System.out.println("========== DEPÓSITO ==========\n");
+        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
+        System.out.print("\nPressione ENTER para voltar ao menu...");
+        input.nextLine();
+        input.nextLine();
 
         return new double[] { saldoAtual, totalDeposito, qtyDeposito, saldoMax };
     }
@@ -261,7 +270,6 @@ public class App {
                         totalDeposito = resultadoDeposito[1];
                         qtyDeposito = (int) resultadoDeposito[2];
                         saldoMax = resultadoDeposito[3];
-                        msg = String.format("Saldo atual: R$ %.2f", saldoAtual);
 
                         break;
 
@@ -286,7 +294,7 @@ public class App {
                         break;
 
                     case 5:
-                        msg = simularEmprestimo(msg, input);
+                        simularEmprestimo(input);
 
                         break;
                     case 6:
