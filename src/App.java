@@ -242,6 +242,7 @@ public class App {
 
     public static Object[] abrirConta(Scanner input) {
         System.out.print("\033\143");
+        System.out.println("========== ABRIR CONTA ==========\n");
         System.out.print("Digite o nome do titular da nova conta: ");
         String nome = input.nextLine();
         System.out.print("Saldo inicial da nova conta: ");
@@ -251,19 +252,18 @@ public class App {
         double saldoMax = saldoInicial;
         input.nextLine();
 
-        System.out.println("Conta cadastrada com sucesso!");
-        System.out.format("Saldo inicial de R$%.2f", saldoInicial);
-        input.nextLine();
-
-        System.out.print("\033\143");
-        System.out.println("Pressione ENTER para voltar ao menu...");
-        input.nextLine();
-
         boolean contaExists = false;
 
         if (saldoInicial != 0.0d && saldoInicial > 0 && saldoAtual == saldoInicial) {
             contaExists = true;
+            System.out.print("\033\143");
+            System.out.println("========== ABRIR CONTA ==========\n");
+            System.out.println("Conta cadastrada com sucesso!\n");
+            System.out.printf("Saldo inicial de R$ %.2f\n", saldoInicial);
         }
+
+        System.out.println("\nPressione ENTER para voltar ao menu...");
+        input.nextLine();
 
         return new Object[] { nome, saldoInicial, saldoAtual, saldoMin, saldoMax, contaExists };
     }
