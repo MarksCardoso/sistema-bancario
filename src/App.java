@@ -171,22 +171,28 @@ public class App {
         System.out.print("\033\143");
         System.out.println("========== APLICAR JUROS ==========\n");
         System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
-
-        System.out.print("Digite a taxa de juros (%): ");
+        System.out.print("\nDigite a taxa de juros (%): ");
         double taxaJuros = input.nextDouble();
 
         while (taxaJuros <= 0) {
             System.out.print("Taxa está invalida. Digite uma taxa com valor positivo: ");
             taxaJuros = input.nextDouble();
         }
-
+        
         double valorJuros = saldoAtual * (taxaJuros / 100);
         saldoAtual += valorJuros;
         totalJuros += valorJuros;
-
+        
         if (saldoAtual > saldoMax) {
             saldoMax = saldoAtual;
         }
+        
+        System.out.print("\033\143");
+        System.out.println("========== APLICAR JUROS ==========\n");
+        System.out.printf("Saldo atual: R$ %.2f\n", saldoAtual);
+        System.out.print("\nPressione ENTER para voltar ao menu...");
+        input.nextLine();
+        input.nextLine();
 
         return new double[] { saldoAtual, totalJuros, saldoMax };
     }
