@@ -215,7 +215,7 @@ public class App {
             double saldoMin) {
         System.out.print("\033\143"); // Limpar tela
         System.out.println("========== EXTRATO ==========\n");
-
+        
         System.out.format("Titular: %s\n", nome);
         System.out.format("Saldo inicial: R$ %.2f\n", saldoInicial);
         System.out.format("Saldo atual: R$ %.2f\n", saldoAtual);
@@ -226,15 +226,15 @@ public class App {
         System.out.format("Valor total de juros recebidos: R$ %.2f\n", totalJuros);
         System.out.format("Saldo máximo da conta: R$ %.2f\n", saldoMax);
         System.out.format("Saldo mínimo da conta: R$ %.2f\n", saldoMin);
-
+        
         System.out.printf("\nPressione ENTER para voltar ao menu...");
         input.nextLine();
     }
-
+    
     public static void showIntegrantes(Scanner input) {
         System.out.print("\033\143");
-        System.out.println("Integrantes: ");
-        System.out.println("Marks Cardoso, Henrique Joaquim e Nícolas Lisbôa");
+        System.out.println("========== INTEGRANTES ==========\n");
+        System.out.println("Marks Cardoso, Henrique Joaquim e Nícolas Lisbôa.\n");
         System.out.print("Pressione ENTER para voltar ao menu...");
         input.nextLine();
     }
