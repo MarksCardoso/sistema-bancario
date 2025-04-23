@@ -215,7 +215,7 @@ public class App {
             double saldoMin) {
         System.out.print("\033\143"); // Limpar tela
         System.out.println("========== EXTRATO ==========\n");
-        
+
         System.out.format("Titular: %s\n", nome);
         System.out.format("Saldo inicial: R$ %.2f\n", saldoInicial);
         System.out.format("Saldo atual: R$ %.2f\n", saldoAtual);
@@ -226,17 +226,45 @@ public class App {
         System.out.format("Valor total de juros recebidos: R$ %.2f\n", totalJuros);
         System.out.format("Saldo máximo da conta: R$ %.2f\n", saldoMax);
         System.out.format("Saldo mínimo da conta: R$ %.2f\n", saldoMin);
-        
+
         System.out.printf("\nPressione ENTER para voltar ao menu...");
         input.nextLine();
     }
-    
+
     public static void showIntegrantes(Scanner input) {
         System.out.print("\033\143");
         System.out.println("========== INTEGRANTES ==========\n");
         System.out.println("Marks Cardoso, Henrique Joaquim e Nícolas Lisbôa.\n");
         System.out.print("Pressione ENTER para voltar ao menu...");
         input.nextLine();
+    }
+
+    public static Object[] abrirConta(Scanner input) {
+        System.out.print("\033\143");
+        System.out.print("Digite o nome do titular da nova conta: ");
+        String nome = input.nextLine();
+        System.out.print("Saldo inicial da nova conta: ");
+        double saldoInicial = input.nextDouble();
+        double saldoAtual = saldoInicial;
+        double saldoMin = saldoInicial;
+        double saldoMax = saldoInicial;
+        input.nextLine();
+
+        System.out.println("Conta cadastrada com sucesso!");
+        System.out.format("Saldo inicial de R$%.2f", saldoInicial);
+        input.nextLine();
+
+        System.out.print("\033\143");
+        System.out.println("Pressione ENTER para voltar ao menu...");
+        input.nextLine();
+
+        boolean contaExists = false;
+
+        if (saldoInicial != 0.0d && saldoInicial > 0 && saldoAtual == saldoInicial) {
+            contaExists = true;
+        }
+
+        return new Object[] { nome, saldoInicial, saldoAtual, saldoMin, saldoMax, contaExists };
     }
 
     public static void main(String[] args) throws Exception {
@@ -301,18 +329,20 @@ public class App {
 
                         break;
                     case 6:
-
                         extrato(nome, saldoInicial, input, saldoAtual, qtyDeposito, totalDeposito, qtySaques,
                                 totalSaques, totalJuros, saldoMax, saldoMin);
                         break;
+
                     case 7:
                         showIntegrantes(input);
 
                         break;
+
                     case 8:
                         msg = "Fechando programa";
 
                         break;
+
                     default:
                         msg = "ERRO: Opção indisponível";
 
@@ -321,27 +351,13 @@ public class App {
             } else {
                 switch (option) {
                     case 1:
-                        System.out.print("\033\143");
-                        System.out.print("Digite o nome do titular da nova conta: ");
-                        nome = input.nextLine();
-                        System.out.print("Saldo inicial da nova conta: ");
-                        saldoInicial = input.nextFloat();
-                        saldoAtual = saldoInicial;
-                        saldoMin = saldoInicial;
-                        saldoMax = saldoInicial;
-                        input.nextLine();
-
-                        System.out.println("Conta cadastrada com sucesso!");
-                        System.out.format("Saldo inicial de R$%.2f", saldoInicial);
-                        input.nextLine();
-
-                        System.out.print("\033\143");
-                        System.out.println("Pressione ENTER para voltar ao menu...");
-                        input.nextLine();
-
-                        if (saldoInicial != 0.0d && saldoInicial > 0 && saldoAtual == saldoInicial) {
-                            contaExists = true;
-                        }
+                        Object[] conta = abrirConta(input);
+                        nome = (String) conta[0];
+                        saldoInicial = (double) conta[1];
+                        saldoAtual = (double) conta[2];
+                        saldoMin = (double) conta[3];
+                        saldoMax = (double) conta[4];
+                        contaExists = (boolean) conta[5];
 
                         break;
 
@@ -349,6 +365,7 @@ public class App {
                         msg = "Fechando programa";
 
                         break;
+
                     default:
                         msg = "ERRO: Opção indisponível";
 
